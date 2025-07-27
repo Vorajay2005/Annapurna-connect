@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vendor Signup - Annapurna Connect</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/signup.css" />
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="nav-logo">
+          <i class="fas fa-mountain"></i>
+          <span>Annapurna Connect</span>
+        </div>
+        <div class="nav-menu">
+          <a href="index.html" class="nav-link">← Back to Home</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Signup Container -->
+    <div class="signup-container">
+      <div class="signup-card">
+        <div class="signup-header">
+          <div class="signup-icon">
+            <i class="fas fa-store"></i>
+          </div>
+          <h1>Join as a Vendor</h1>
+          <p>Connect with verified suppliers for quality ingredients</p>
+        </div>
+
+        <form id="vendorSignupForm" class="signup-form">
+          <!-- Step 1: Basic Information -->
+          <div class="step active" id="step1">
+            <h3>Basic Information</h3>
+
+            <div class="form-row">
+              <div class="input-group">
+                <label for="fullName">Full Name *</label>
+                <input type="text" id="fullName" name="fullName" required />
+              </div>
+              <div class="input-group">
+                <label for="mobile">Mobile Number *</label>
+                <input type="tel" id="mobile" name="mobile" required />
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" name="email" />
+            </div>
+
+            <div class="form-buttons">
+              <button type="button" class="btn-primary" onclick="nextStep(2)">
+                Next <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 2: Business Details -->
+          <div class="step" id="step2">
+            <h3>Business Details</h3>
+
+            <div class="input-group">
+              <label for="businessName">Stall/Business Name *</label>
+              <input
+                type="text"
+                id="businessName"
+                name="businessName"
+                required
+              />
+            </div>
+
+            <div class="input-group">
+              <label for="foodType">Type of Food You Sell *</label>
+              <select id="foodType" name="foodType" required>
+                <option value="">Select Food Type</option>
+                <option value="vada-pav">Vada Pav</option>
+                <option value="dosa">Dosa</option>
+                <option value="chaat">Chaat</option>
+                <option value="juice">Fresh Juices</option>
+                <option value="tea-coffee">Tea & Coffee</option>
+                <option value="parathas">Parathas</option>
+                <option value="biryani">Biryani</option>
+                <option value="sandwich">Sandwiches</option>
+                <option value="momos">Momos</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+
+            <div class="input-group" id="otherFoodType" style="display: none">
+              <label for="otherFood">Please specify *</label>
+              <input type="text" id="otherFood" name="otherFood" />
+            </div>
+
+            <div class="form-buttons">
+              <button type="button" class="btn-secondary" onclick="prevStep(1)">
+                <i class="fas fa-arrow-left"></i> Previous
+              </button>
+              <button type="button" class="btn-primary" onclick="nextStep(3)">
+                Next <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 3: Location -->
+          <div class="step" id="step3">
+            <h3>Stall Location</h3>
+
+            <div class="input-group">
+              <label for="address">Complete Address *</label>
+              <textarea
+                id="address"
+                name="address"
+                rows="3"
+                required
+                placeholder="Enter your stall address"
+              ></textarea>
+            </div>
+
+            <div class="form-row">
+              <div class="input-group">
+                <label for="city">City *</label>
+                <input type="text" id="city" name="city" required />
+              </div>
+              <div class="input-group">
+                <label for="pincode">PIN Code *</label>
+                <input type="text" id="pincode" name="pincode" required />
+              </div>
+            </div>
+
+            <div class="location-help">
+              <button
+                type="button"
+                class="btn-link"
+                onclick="getCurrentLocation()"
+              >
+                <i class="fas fa-map-marker-alt"></i> Use Current Location
+              </button>
+            </div>
+
+            <div class="form-buttons">
+              <button type="button" class="btn-secondary" onclick="prevStep(2)">
+                <i class="fas fa-arrow-left"></i> Previous
+              </button>
+              <button type="button" class="btn-primary" onclick="nextStep(4)">
+                Next <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 4: Preferences -->
+          <div class="step" id="step4">
+            <h3>Your Preferences</h3>
+
+            <div class="input-group">
+              <label>Which products do you need regularly? *</label>
+              <div class="checkbox-grid">
+                <label class="checkbox-item">
+                  <input type="checkbox" name="products" value="vegetables" />
+                  <span class="checkmark">🥬</span>
+                  <span>Vegetables</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="products" value="spices" />
+                  <span class="checkmark">🌶️</span>
+                  <span>Spices</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="products" value="dairy" />
+                  <span class="checkmark">🥛</span>
+                  <span>Dairy</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="products" value="grains" />
+                  <span class="checkmark">🌾</span>
+                  <span>Grains</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="products" value="meat" />
+                  <span class="checkmark">🍖</span>
+                  <span>Meat</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="products" value="packaging" />
+                  <span class="checkmark">📦</span>
+                  <span>Packaging</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label for="orderFrequency"
+                >How often do you place orders? *</label
+              >
+              <select id="orderFrequency" name="orderFrequency" required>
+                <option value="">Select Frequency</option>
+                <option value="daily">Daily</option>
+                <option value="weekly">2-3 times a week</option>
+                <option value="bi-weekly">Once a week</option>
+                <option value="monthly">Few times a month</option>
+              </select>
+            </div>
+
+            <div class="form-buttons">
+              <button type="button" class="btn-secondary" onclick="prevStep(3)">
+                <i class="fas fa-arrow-left"></i> Previous
+              </button>
+              <button type="submit" class="btn-primary">
+                Complete Registration <i class="fas fa-check"></i>
+              </button>
+            </div>
+          </div>
+        </form>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+          <div class="step-indicators">
+            <div class="step-indicator active" data-step="1">1</div>
+            <div class="step-indicator" data-step="2">2</div>
+            <div class="step-indicator" data-step="3">3</div>
+            <div class="step-indicator" data-step="4">4</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Benefits Section -->
+      <div class="benefits-section">
+        <h3>Why Vendors Love Us</h3>
+        <div class="benefits-grid">
+          <div class="benefit-item">
+            <i class="fas fa-shield-alt"></i>
+            <h4>Verified Suppliers</h4>
+            <p>All suppliers are FSSAI certified and quality verified</p>
+          </div>
+          <div class="benefit-item">
+            <i class="fas fa-chart-line"></i>
+            <h4>Stable Prices</h4>
+            <p>No daily price fluctuations, plan your business better</p>
+          </div>
+          <div class="benefit-item">
+            <i class="fas fa-users"></i>
+            <h4>Group Discounts</h4>
+            <p>Join with nearby vendors for bulk purchase benefits</p>
+          </div>
+          <div class="benefit-item">
+            <i class="fas fa-truck"></i>
+            <h4>Fast Delivery</h4>
+            <p>Quick and reliable delivery to your location</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/signup.js"></script>
+  </body>
+</html>

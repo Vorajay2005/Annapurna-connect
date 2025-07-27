@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vendor Dashboard - Annapurna Connect</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/dashboard.css" />
+  </head>
+  <body>
+    <!-- Dashboard Header -->
+    <header class="dashboard-header">
+      <div class="header-container">
+        <div class="header-left">
+          <div class="logo">
+            <i class="fas fa-mountain"></i>
+            <span>Annapurna Connect</span>
+          </div>
+          <div class="user-greeting">
+            <h2>Welcome back, <span id="userName">User</span>! 👋</h2>
+            <p>Ready to stock up your rasoi?</p>
+          </div>
+        </div>
+        <div class="header-right">
+          <div class="quick-actions">
+            <button class="action-btn" onclick="showQuickOrder()">
+              <i class="fas fa-plus"></i>
+              Quick Order
+            </button>
+            <button class="action-btn" onclick="showGroupOrders()">
+              <i class="fas fa-users"></i>
+              Group Orders
+            </button>
+          </div>
+          <div class="user-menu">
+            <img
+              src="https://via.placeholder.com/40x40/ff6b35/ffffff?text=U"
+              alt="Profile"
+              class="profile-pic"
+              id="profilePic"
+            />
+            <div class="dropdown">
+              <i class="fas fa-chevron-down"></i>
+              <div class="dropdown-menu">
+                <a href="#"><i class="fas fa-user"></i> Profile</a>
+                <a href="#"><i class="fas fa-cog"></i> Settings</a>
+                <a href="#" onclick="logout()"
+                  ><i class="fas fa-sign-out-alt"></i> Logout</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Dashboard Content -->
+    <main class="dashboard-main">
+      <!-- Stats Cards -->
+      <section class="stats-section">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-shopping-cart"></i>
+            </div>
+            <div class="stat-info">
+              <h3>12</h3>
+              <p>Active Orders</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-rupee-sign"></i>
+            </div>
+            <div class="stat-info">
+              <h3>₹2,450</h3>
+              <p>This Month</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-truck"></i>
+            </div>
+            <div class="stat-info">
+              <h3>8</h3>
+              <p>Suppliers</p>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-star"></i>
+            </div>
+            <div class="stat-info">
+              <h3>4.8</h3>
+              <p>Rating</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Main Dashboard Grid -->
+      <section class="dashboard-grid">
+        <!-- Product Categories -->
+        <div class="dashboard-card">
+          <div class="card-header">
+            <h3><i class="fas fa-th-large"></i> Product Categories</h3>
+            <button class="btn-link">View All</button>
+          </div>
+          <div class="categories-grid">
+            <div class="category-item" onclick="browseCategory('vegetables')">
+              <div class="category-icon">🥬</div>
+              <span>Vegetables</span>
+              <div class="category-count">25 items</div>
+            </div>
+            <div class="category-item" onclick="browseCategory('spices')">
+              <div class="category-icon">🌶️</div>
+              <span>Spices</span>
+              <div class="category-count">15 items</div>
+            </div>
+            <div class="category-item" onclick="browseCategory('dairy')">
+              <div class="category-icon">🥛</div>
+              <span>Dairy</span>
+              <div class="category-count">8 items</div>
+            </div>
+            <div class="category-item" onclick="browseCategory('grains')">
+              <div class="category-icon">🌾</div>
+              <span>Grains</span>
+              <div class="category-count">12 items</div>
+            </div>
+            <div class="category-item" onclick="browseCategory('meat')">
+              <div class="category-icon">🍖</div>
+              <span>Meat</span>
+              <div class="category-count">10 items</div>
+            </div>
+            <div class="category-item" onclick="browseCategory('packaging')">
+              <div class="category-icon">📦</div>
+              <span>Packaging</span>
+              <div class="category-count">20 items</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Orders -->
+        <div class="dashboard-card">
+          <div class="card-header">
+            <h3><i class="fas fa-clock"></i> Recent Orders</h3>
+            <button class="btn-link">View All</button>
+          </div>
+          <div class="orders-list">
+            <div class="order-item">
+              <div class="order-info">
+                <h4>Fresh Vegetables</h4>
+                <p>5kg Onions, 3kg Tomatoes, 2kg Potatoes</p>
+                <span class="order-date">2 hours ago</span>
+              </div>
+              <div class="order-status">
+                <span class="status-badge status-processing">Processing</span>
+                <span class="order-amount">₹285</span>
+              </div>
+            </div>
+            <div class="order-item">
+              <div class="order-info">
+                <h4>Dairy Products</h4>
+                <p>10L Milk, 1kg Paneer, 2kg Curd</p>
+                <span class="order-date">1 day ago</span>
+              </div>
+              <div class="order-status">
+                <span class="status-badge status-delivered">Delivered</span>
+                <span class="order-amount">₹520</span>
+              </div>
+            </div>
+            <div class="order-item">
+              <div class="order-info">
+                <h4>Spices & Masala</h4>
+                <p>500g Garam Masala, 250g Turmeric</p>
+                <span class="order-date">2 days ago</span>
+              </div>
+              <div class="order-status">
+                <span class="status-badge status-delivered">Delivered</span>
+                <span class="order-amount">₹180</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Nearby Group Orders -->
+        <div class="dashboard-card">
+          <div class="card-header">
+            <h3><i class="fas fa-users"></i> Join Group Orders</h3>
+            <button class="btn-link">See More</button>
+          </div>
+          <div class="group-orders">
+            <div class="group-order-item">
+              <div class="group-info">
+                <h4>Bulk Onion Order</h4>
+                <p>📍 Within 2km • 8/10 vendors joined</p>
+                <div class="group-progress">
+                  <div class="progress-bar">
+                    <div class="progress-fill" style="width: 80%"></div>
+                  </div>
+                  <span>80% filled</span>
+                </div>
+              </div>
+              <div class="group-action">
+                <div class="discount-badge">15% OFF</div>
+                <button class="btn-join" onclick="joinGroupOrder(1)">
+                  Join
+                </button>
+              </div>
+            </div>
+            <div class="group-order-item">
+              <div class="group-info">
+                <h4>Packaging Materials</h4>
+                <p>📍 Within 1km • 5/12 vendors joined</p>
+                <div class="group-progress">
+                  <div class="progress-bar">
+                    <div class="progress-fill" style="width: 42%"></div>
+                  </div>
+                  <span>42% filled</span>
+                </div>
+              </div>
+              <div class="group-action">
+                <div class="discount-badge">20% OFF</div>
+                <button class="btn-join" onclick="joinGroupOrder(2)">
+                  Join
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Trusted Suppliers -->
+        <div class="dashboard-card">
+          <div class="card-header">
+            <h3><i class="fas fa-shield-alt"></i> Your Trusted Suppliers</h3>
+            <button class="btn-link">Find More</button>
+          </div>
+          <div class="suppliers-list">
+            <div class="supplier-item">
+              <div class="supplier-avatar">
+                <img
+                  src="https://via.placeholder.com/50x50/2c5530/ffffff?text=FS"
+                  alt="Fresh Suppliers"
+                />
+              </div>
+              <div class="supplier-info">
+                <h4>Fresh Suppliers Co.</h4>
+                <p>Vegetables & Fruits</p>
+                <div class="supplier-badges">
+                  <span class="badge badge-verified">✅ FSSAI</span>
+                  <span class="badge badge-rating">⭐ 4.9</span>
+                </div>
+              </div>
+              <button class="btn-contact" onclick="contactSupplier(1)">
+                <i class="fas fa-phone"></i>
+              </button>
+            </div>
+            <div class="supplier-item">
+              <div class="supplier-avatar">
+                <img
+                  src="https://via.placeholder.com/50x50/2c5530/ffffff?text=DD"
+                  alt="Dairy Direct"
+                />
+              </div>
+              <div class="supplier-info">
+                <h4>Dairy Direct</h4>
+                <p>Milk & Dairy Products</p>
+                <div class="supplier-badges">
+                  <span class="badge badge-verified">✅ FSSAI</span>
+                  <span class="badge badge-rating">⭐ 4.7</span>
+                </div>
+              </div>
+              <button class="btn-contact" onclick="contactSupplier(2)">
+                <i class="fas fa-phone"></i>
+              </button>
+            </div>
+            <div class="supplier-item">
+              <div class="supplier-avatar">
+                <img
+                  src="https://via.placeholder.com/50x50/2c5530/ffffff?text=SM"
+                  alt="Spice Masters"
+                />
+              </div>
+              <div class="supplier-info">
+                <h4>Spice Masters</h4>
+                <p>Premium Spices</p>
+                <div class="supplier-badges">
+                  <span class="badge badge-verified">✅ FSSAI</span>
+                  <span class="badge badge-rating">⭐ 4.8</span>
+                </div>
+              </div>
+              <button class="btn-contact" onclick="contactSupplier(3)">
+                <i class="fas fa-phone"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Price Comparison -->
+        <div class="dashboard-card">
+          <div class="card-header">
+            <h3><i class="fas fa-chart-line"></i> Today's Price Comparison</h3>
+            <button class="btn-link">View More</button>
+          </div>
+          <div class="price-comparison">
+            <div class="price-item">
+              <div class="product-info">
+                <span class="product-name">Onions (1kg)</span>
+              </div>
+              <div class="price-info">
+                <span class="market-price">Market: ₹45</span>
+                <span class="our-price">Our Price: ₹38</span>
+                <span class="savings">Save ₹7</span>
+              </div>
+            </div>
+            <div class="price-item">
+              <div class="product-info">
+                <span class="product-name">Tomatoes (1kg)</span>
+              </div>
+              <div class="price-info">
+                <span class="market-price">Market: ₹60</span>
+                <span class="our-price">Our Price: ₹52</span>
+                <span class="savings">Save ₹8</span>
+              </div>
+            </div>
+            <div class="price-item">
+              <div class="product-info">
+                <span class="product-name">Milk (1L)</span>
+              </div>
+              <div class="price-info">
+                <span class="market-price">Market: ₹55</span>
+                <span class="our-price">Our Price: ₹50</span>
+                <span class="savings">Save ₹5</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Quick Order Modal -->
+    <div id="quickOrderModal" class="modal">
+      <div class="modal-content large-modal">
+        <span class="close" onclick="hideModal('quickOrderModal')"
+          >&times;</span
+        >
+        <h2>Quick Order</h2>
+        <div class="quick-order-content">
+          <div class="search-section">
+            <div class="search-box">
+              <i class="fas fa-search"></i>
+              <input
+                type="text"
+                placeholder="Search products..."
+                id="productSearch"
+              />
+            </div>
+            <div class="category-filters">
+              <button class="filter-btn active" data-category="all">All</button>
+              <button class="filter-btn" data-category="vegetables">
+                Vegetables
+              </button>
+              <button class="filter-btn" data-category="dairy">Dairy</button>
+              <button class="filter-btn" data-category="spices">Spices</button>
+            </div>
+          </div>
+          <div class="products-grid" id="productsGrid">
+            <!-- Products will be loaded here -->
+          </div>
+          <div class="order-summary">
+            <h3>Order Summary</h3>
+            <div id="orderItems"></div>
+            <div class="total-section">
+              <strong>Total: ₹<span id="orderTotal">0</span></strong>
+            </div>
+            <button class="btn-primary full-width" onclick="placeOrder()">
+              Place Order
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/dashboard.js"></script>
+  </body>
+</html>

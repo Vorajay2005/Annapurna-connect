@@ -1,0 +1,50 @@
+{
+  "name": "annapurna-connect",
+  "version": "1.0.0",
+  "description": "Your Trusted Rasoi Partner - Connecting street food vendors with verified suppliers",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx http-server . -p 8080 -o",
+    "dev": "npx http-server . -p 8080 -o",
+    "build": "echo 'No build step required for static site'",
+    "test": "echo 'No tests specified'",
+    "deploy": "netlify deploy --prod --dir=.",
+    "lighthouse": "lighthouse http://localhost:8080 --view",
+    "validate": "html-validate *.html"
+  },
+  "keywords": [
+    "street-food",
+    "suppliers",
+    "vendors",
+    "food-tech",
+    "pwa",
+    "india",
+    "rasoi",
+    "fssai",
+    "supply-chain"
+  ],
+  "author": "Annapurna Connect Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/annapurna-connect.git"
+  },
+  "homepage": "https://annapurna-connect.netlify.app",
+  "bugs": {
+    "url": "https://github.com/your-username/annapurna-connect/issues"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "lighthouse": "^10.4.0",
+    "netlify-cli": "^17.10.1"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
+  ],
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

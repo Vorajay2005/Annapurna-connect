@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Supplier Signup - Annapurna Connect</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/signup.css" />
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="nav-logo">
+          <i class="fas fa-mountain"></i>
+          <span>Annapurna Connect</span>
+        </div>
+        <div class="nav-menu">
+          <a href="index.html" class="nav-link">← Back to Home</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Signup Container -->
+    <div class="signup-container">
+      <div class="signup-card">
+        <div class="signup-header">
+          <div class="signup-icon supplier">
+            <i class="fas fa-truck"></i>
+          </div>
+          <h1>Join as a Supplier</h1>
+          <p>Connect with street food vendors and grow your business</p>
+        </div>
+
+        <form id="supplierSignupForm" class="signup-form">
+          <!-- Step 1: Business Information -->
+          <div class="step active" id="step1">
+            <h3>Business Information</h3>
+
+            <div class="input-group">
+              <label for="businessName">Business Name *</label>
+              <input
+                type="text"
+                id="businessName"
+                name="businessName"
+                required
+              />
+            </div>
+
+            <div class="form-row">
+              <div class="input-group">
+                <label for="ownerName">Owner Name *</label>
+                <input type="text" id="ownerName" name="ownerName" required />
+              </div>
+              <div class="input-group">
+                <label for="mobile">Mobile Number *</label>
+                <input type="tel" id="mobile" name="mobile" required />
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label for="email">Email Address *</label>
+              <input type="email" id="email" name="email" required />
+            </div>
+
+            <div class="form-buttons">
+              <button type="button" class="btn-primary" onclick="nextStep(2)">
+                Next <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 2: FSSAI & Documents -->
+          <div class="step" id="step2">
+            <h3>FSSAI License & Documents</h3>
+
+            <div class="input-group">
+              <label for="fssaiNumber">FSSAI License Number *</label>
+              <input type="text" id="fssaiNumber" name="fssaiNumber" required />
+              <small>This will be verified by our team</small>
+            </div>
+
+            <div class="input-group">
+              <label for="fssaiDocument">Upload FSSAI Certificate *</label>
+              <div class="file-upload">
+                <input
+                  type="file"
+                  id="fssaiDocument"
+                  name="fssaiDocument"
+                  accept=".pdf,.jpg,.jpeg,.png"
+                  required
+                />
+                <label for="fssaiDocument" class="file-upload-label">
+                  <i class="fas fa-upload"></i>
+                  <span>Choose File</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label for="gstNumber">GST Number</label>
+              <input type="text" id="gstNumber" name="gstNumber" />
+              <small>Optional but recommended for better visibility</small>
+            </div>
+
+            <div class="form-buttons">
+              <button type="button" class="btn-secondary" onclick="prevStep(1)">
+                <i class="fas fa-arrow-left"></i> Previous
+              </button>
+              <button type="button" class="btn-primary" onclick="nextStep(3)">
+                Next <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 3: Location & Delivery -->
+          <div class="step" id="step3">
+            <h3>Business Location & Delivery</h3>
+
+            <div class="input-group">
+              <label for="address">Business Address *</label>
+              <textarea
+                id="address"
+                name="address"
+                rows="3"
+                required
+                placeholder="Enter your business address"
+              ></textarea>
+            </div>
+
+            <div class="form-row">
+              <div class="input-group">
+                <label for="city">City *</label>
+                <input type="text" id="city" name="city" required />
+              </div>
+              <div class="input-group">
+                <label for="pincode">PIN Code *</label>
+                <input type="text" id="pincode" name="pincode" required />
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label for="deliveryRadius">Delivery Radius (in km) *</label>
+              <select id="deliveryRadius" name="deliveryRadius" required>
+                <option value="">Select Delivery Range</option>
+                <option value="5">Within 5 km</option>
+                <option value="10">Within 10 km</option>
+                <option value="15">Within 15 km</option>
+                <option value="20">Within 20 km</option>
+                <option value="25">Within 25 km</option>
+              </select>
+            </div>
+
+            <div class="input-group">
+              <label>Do you have your own delivery vehicle? *</label>
+              <div class="radio-group">
+                <label class="radio-item">
+                  <input type="radio" name="ownDelivery" value="yes" required />
+                  <span class="radio-mark"></span>
+                  <span>Yes, I have my own delivery</span>
+                </label>
+                <label class="radio-item">
+                  <input type="radio" name="ownDelivery" value="no" required />
+                  <span class="radio-mark"></span>
+                  <span>No, I need delivery support</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-buttons">
+              <button type="button" class="btn-secondary" onclick="prevStep(2)">
+                <i class="fas fa-arrow-left"></i> Previous
+              </button>
+              <button type="button" class="btn-primary" onclick="nextStep(4)">
+                Next <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Step 4: Products & Categories -->
+          <div class="step" id="step4">
+            <h3>Products You Supply</h3>
+
+            <div class="input-group">
+              <label>Select categories you supply *</label>
+              <div class="checkbox-grid">
+                <label class="checkbox-item">
+                  <input
+                    type="checkbox"
+                    name="categories"
+                    value="vegetables"
+                    required
+                  />
+                  <span class="checkmark">🥬</span>
+                  <span>Vegetables</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="categories" value="fruits" />
+                  <span class="checkmark">🍎</span>
+                  <span>Fruits</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="categories" value="spices" />
+                  <span class="checkmark">🌶️</span>
+                  <span>Spices</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="categories" value="dairy" />
+                  <span class="checkmark">🥛</span>
+                  <span>Dairy</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="categories" value="grains" />
+                  <span class="checkmark">🌾</span>
+                  <span>Grains</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="categories" value="meat" />
+                  <span class="checkmark">🍖</span>
+                  <span>Meat</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="categories" value="packaging" />
+                  <span class="checkmark">📦</span>
+                  <span>Packaging</span>
+                </label>
+                <label class="checkbox-item">
+                  <input type="checkbox" name="categories" value="beverages" />
+                  <span class="checkmark">🥤</span>
+                  <span>Beverages</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label for="businessHours">Business Hours *</label>
+              <div class="time-range">
+                <select id="openTime" name="openTime" required>
+                  <option value="">Opening Time</option>
+                  <option value="05:00">5:00 AM</option>
+                  <option value="06:00">6:00 AM</option>
+                  <option value="07:00">7:00 AM</option>
+                  <option value="08:00">8:00 AM</option>
+                  <option value="09:00">9:00 AM</option>
+                  <option value="10:00">10:00 AM</option>
+                </select>
+                <span>to</span>
+                <select id="closeTime" name="closeTime" required>
+                  <option value="">Closing Time</option>
+                  <option value="18:00">6:00 PM</option>
+                  <option value="19:00">7:00 PM</option>
+                  <option value="20:00">8:00 PM</option>
+                  <option value="21:00">9:00 PM</option>
+                  <option value="22:00">10:00 PM</option>
+                  <option value="23:00">11:00 PM</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label for="specialization">Tell us about your business *</label>
+              <textarea
+                id="specialization"
+                name="specialization"
+                rows="3"
+                required
+                placeholder="What makes your products special? Your experience, quality standards, etc."
+              ></textarea>
+            </div>
+
+            <div class="form-buttons">
+              <button type="button" class="btn-secondary" onclick="prevStep(3)">
+                <i class="fas fa-arrow-left"></i> Previous
+              </button>
+              <button type="submit" class="btn-primary">
+                Complete Registration <i class="fas fa-check"></i>
+              </button>
+            </div>
+          </div>
+        </form>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+          <div class="step-indicators">
+            <div class="step-indicator active" data-step="1">1</div>
+            <div class="step-indicator" data-step="2">2</div>
+            <div class="step-indicator" data-step="3">3</div>
+            <div class="step-indicator" data-step="4">4</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Benefits Section -->
+      <div class="benefits-section">
+        <h3>Why Suppliers Choose Us</h3>
+        <div class="benefits-grid">
+          <div class="benefit-item">
+            <i class="fas fa-users"></i>
+            <h4>Ready Customers</h4>
+            <p>Access to 500+ verified street food vendors</p>
+          </div>
+          <div class="benefit-item">
+            <i class="fas fa-rupee-sign"></i>
+            <h4>Better Earnings</h4>
+            <p>Competitive pricing and timely payments</p>
+          </div>
+          <div class="benefit-item">
+            <i class="fas fa-chart-line"></i>
+            <h4>Business Growth</h4>
+            <p>Analytics and insights to grow your business</p>
+          </div>
+          <div class="benefit-item">
+            <i class="fas fa-handshake"></i>
+            <h4>Reliable Partnership</h4>
+            <p>Long-term relationships with trusted vendors</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/signup.js"></script>
+  </body>
+</html>

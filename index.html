@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Annapurna Connect - Your Trusted Rasoi Partner</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#ff6b35" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Annapurna Connect" />
+
+    <!-- SEO Meta Tags -->
+    <meta
+      name="description"
+      content="Connecting street food vendors with verified suppliers for quality ingredients at fair prices. Your trusted rasoi partner."
+    />
+    <meta
+      name="keywords"
+      content="street food, suppliers, vendors, food ingredients, FSSAI, rasoi, annapurna"
+    />
+    <meta
+      property="og:title"
+      content="Annapurna Connect - Your Trusted Rasoi Partner"
+    />
+    <meta
+      property="og:description"
+      content="Connecting street food vendors with verified suppliers for quality ingredients at fair prices"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://annapurna-connect.netlify.app" />
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="nav-logo">
+          <i class="fas fa-mountain"></i>
+          <span>Annapurna Connect</span>
+        </div>
+        <div class="nav-menu">
+          <a href="#home" class="nav-link">Home</a>
+          <a href="#features" class="nav-link">Features</a>
+          <a href="#how-it-works" class="nav-link">How It Works</a>
+          <a href="#contact" class="nav-link">Contact</a>
+          <button class="btn-primary" onclick="showModal('loginModal')">
+            Login
+          </button>
+        </div>
+        <div class="hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+      <div class="hero-container">
+        <div class="hero-content">
+          <h1>Your Trusted <span class="highlight">Rasoi Partner</span></h1>
+          <p>
+            Connecting street food vendors with verified suppliers for quality
+            ingredients at fair prices
+          </p>
+          <div class="hero-buttons">
+            <button class="btn-primary" onclick="startJourney('vendor')">
+              <i class="fas fa-store"></i>
+              I'm a Vendor
+            </button>
+            <button class="btn-secondary" onclick="startJourney('supplier')">
+              <i class="fas fa-truck"></i>
+              I'm a Supplier
+            </button>
+          </div>
+        </div>
+        <div class="hero-image">
+          <div class="hero-illustration">
+            <div class="food-truck">🍛</div>
+            <div class="connecting-line"></div>
+            <div class="supplier-truck">🚛</div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <h3>500+</h3>
+          <p>Street Vendors</p>
+        </div>
+        <div class="stat">
+          <h3>100+</h3>
+          <p>Verified Suppliers</p>
+        </div>
+        <div class="stat">
+          <h3>₹10L+</h3>
+          <p>Transactions</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+      <div class="container">
+        <h2>Why Choose Annapurna Connect?</h2>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-shield-alt"></i>
+            </div>
+            <h3>FSSAI Verified</h3>
+            <p>
+              All suppliers are verified and FSSAI certified for food safety
+              compliance
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <h3>Stable Pricing</h3>
+            <p>
+              Fixed prices that don't fluctuate with daily market volatility
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <h3>Group Buying</h3>
+            <p>
+              Join group orders with nearby vendors for better bulk discounts
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-clock"></i>
+            </div>
+            <h3>Quick Delivery</h3>
+            <p>
+              Fast and reliable delivery to keep your business running smoothly
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-credit-card"></i>
+            </div>
+            <h3>Flexible Payments</h3>
+            <p>
+              Multiple payment options including UPI, cash, and pay-later
+              facilities
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-mobile-alt"></i>
+            </div>
+            <h3>Mobile First</h3>
+            <p>
+              Designed for mobile use with simple, intuitive interface for all
+              users
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how-it-works" class="how-it-works">
+      <div class="container">
+        <h2>How It Works</h2>
+        <div class="process-tabs">
+          <button class="tab-btn active" onclick="showProcess('vendor')">
+            For Vendors
+          </button>
+          <button class="tab-btn" onclick="showProcess('supplier')">
+            For Suppliers
+          </button>
+        </div>
+
+        <div id="vendor-process" class="process-content active">
+          <div class="process-steps">
+            <div class="step">
+              <div class="step-number">1</div>
+              <div class="step-content">
+                <h3>Sign Up</h3>
+                <p>Quick registration with just your mobile number</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-number">2</div>
+              <div class="step-content">
+                <h3>Browse Suppliers</h3>
+                <p>Find verified suppliers near your location</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-number">3</div>
+              <div class="step-content">
+                <h3>Place Order</h3>
+                <p>Choose products and join group orders for better prices</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-number">4</div>
+              <div class="step-content">
+                <h3>Get Delivered</h3>
+                <p>Receive quality ingredients at your location</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="supplier-process" class="process-content">
+          <div class="process-steps">
+            <div class="step">
+              <div class="step-number">1</div>
+              <div class="step-content">
+                <h3>Register</h3>
+                <p>Upload FSSAI license and business details</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-number">2</div>
+              <div class="step-content">
+                <h3>List Products</h3>
+                <p>Add your products with photos and pricing</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-number">3</div>
+              <div class="step-content">
+                <h3>Receive Orders</h3>
+                <p>Get orders from nearby vendors</p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step-number">4</div>
+              <div class="step-content">
+                <h3>Deliver & Earn</h3>
+                <p>Fulfill orders and receive timely payments</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact" class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <div class="footer-logo">
+              <i class="fas fa-mountain"></i>
+              <span>Annapurna Connect</span>
+            </div>
+            <p>Your trusted rasoi partner for quality ingredients</p>
+          </div>
+          <div class="footer-section">
+            <h3>Quick Links</h3>
+            <ul>
+              <li><a href="#home">Home</a></li>
+              <li><a href="#features">Features</a></li>
+              <li><a href="#how-it-works">How It Works</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h3>Contact</h3>
+            <p><i class="fas fa-phone"></i> +91 9876543210</p>
+            <p><i class="fas fa-envelope"></i> hello@annapurnaconnect.com</p>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2024 Annapurna Connect. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="hideModal('loginModal')">&times;</span>
+        <h2>Login to Annapurna Connect</h2>
+        <form id="loginForm">
+          <div class="input-group">
+            <label>Your Name</label>
+            <input
+              type="text"
+              id="loginName"
+              placeholder="Enter your full name"
+              required
+            />
+          </div>
+          <div class="input-group">
+            <label>Mobile Number</label>
+            <input
+              type="tel"
+              id="loginMobile"
+              placeholder="Enter your mobile number"
+              required
+            />
+          </div>
+          <button type="submit" class="btn-primary full-width">Send OTP</button>
+        </form>
+        <div class="modal-footer">
+          <p>New user? <a href="#" onclick="showSignup()">Sign up here</a></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- OTP Modal -->
+    <div id="otpModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="hideModal('otpModal')">&times;</span>
+        <h2>Enter OTP</h2>
+        <p>We've sent a 6-digit OTP to <span id="otpMobile"></span></p>
+        <form id="otpForm">
+          <div class="otp-inputs">
+            <input type="text" maxlength="1" class="otp-digit" />
+            <input type="text" maxlength="1" class="otp-digit" />
+            <input type="text" maxlength="1" class="otp-digit" />
+            <input type="text" maxlength="1" class="otp-digit" />
+            <input type="text" maxlength="1" class="otp-digit" />
+            <input type="text" maxlength="1" class="otp-digit" />
+          </div>
+          <button type="submit" class="btn-primary full-width">
+            Verify OTP
+          </button>
+        </form>
+        <div class="modal-footer">
+          <p>
+            Didn't receive OTP? <a href="#" onclick="resendOTP()">Resend</a>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/main.js"></script>
+  </body>
+</html>
