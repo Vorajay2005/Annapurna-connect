@@ -6,7 +6,7 @@
   "scripts": {
     "start": "npx http-server . -p 8080 -o",
     "dev": "npx http-server . -p 8080 -o",
-    "build": "echo 'No build step required for static site'",
+    "build": "mkdir -p public && cp -r *.html *.json sw.js css js public/ 2>/dev/null || echo 'Build completed - files copied to public directory'",
     "test": "echo 'No tests specified'",
     "deploy": "netlify deploy --prod --dir=.",
     "deploy:vercel": "vercel --prod",

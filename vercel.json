@@ -1,6 +1,8 @@
 {
   "version": 2,
   "name": "annapurna-connect",
+  "buildCommand": "npm run build",
+  "outputDirectory": "public",
   "rewrites": [
     {
       "source": "/(.*)",
