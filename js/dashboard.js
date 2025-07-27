@@ -1,5 +1,796 @@
 // Dashboard JavaScript
 
+// =================
+// BUTTON FUNCTIONS
+// =================
+
+// Profile & Settings Functions
+function showProfile() {
+  showNotification("Profile page coming soon! 👤", "info");
+  console.log("Profile clicked");
+}
+
+function showSettings() {
+  showNotification("Settings panel opening soon! ⚙️", "info");
+  console.log("Settings clicked");
+}
+
+function logout() {
+  if (confirm("Are you sure you want to logout?")) {
+    localStorage.removeItem("userName");
+    localStorage.removeItem("isLoggedIn");
+    showNotification("Logging out... 👋", "success");
+    setTimeout(() => {
+      window.location.href = "index.html";
+    }, 1500);
+  }
+}
+
+// Quick Actions
+function showQuickOrder() {
+  showNotification("Quick Order feature coming soon! 🚀", "info");
+  console.log("Quick Order clicked");
+}
+
+function showGroupOrders() {
+  showNotification("Group Orders panel opening soon! 👥", "info");
+  console.log("Group Orders clicked");
+}
+
+// Category Functions
+function browseCategory(category) {
+  showNotification(`Browsing ${category} category! 🛒`, "success");
+  console.log(`Category selected: ${category}`);
+
+  // Scroll to products section
+  const productsSection = document.getElementById("productsSection");
+  if (productsSection) {
+    productsSection.scrollIntoView({ behavior: "smooth" });
+  }
+}
+
+// =================
+// GROUP ORDER SYSTEM
+// =================
+
+// Group Orders Data
+let groupOrders = {
+  1: {
+    id: 1,
+    title: "Bulk Onion Order",
+    description:
+      "Premium quality onions from verified suppliers. Perfect for restaurants and bulk buyers.",
+    location: "Within 2km",
+    currentParticipants: 8,
+    maxParticipants: 10,
+    discount: 15,
+    minQuantity: "50kg",
+    pricePerKg: 25,
+    originalPrice: 30,
+    timeLeft: "2 days",
+    organizer: "Rajesh Traders",
+    participants: [
+      "Mumbai Kitchen",
+      "Spice Garden",
+      "Fresh Mart",
+      "Green Grocers",
+      "City Restaurant",
+      "Food Plaza",
+      "Quick Bites",
+      "Tasty Corner",
+    ],
+    isJoined: false,
+    category: "Vegetables",
+    deadline: "Dec 28, 2024",
+  },
+  2: {
+    id: 2,
+    title: "Packaging Materials",
+    description:
+      "Eco-friendly packaging materials including boxes, bags, and containers for restaurants.",
+    location: "Within 1km",
+    currentParticipants: 5,
+    maxParticipants: 12,
+    discount: 20,
+    minQuantity: "100 pieces",
+    pricePerKg: 8,
+    originalPrice: 10,
+    timeLeft: "5 days",
+    organizer: "Pack Solutions",
+    participants: [
+      "Quick Bites",
+      "Food Express",
+      "Cafe Central",
+      "Street Food Co",
+      "Snack Corner",
+    ],
+    isJoined: false,
+    category: "Packaging",
+    deadline: "Dec 31, 2024",
+  },
+  3: {
+    id: 3,
+    title: "Premium Basmati Rice",
+    description:
+      "High-quality aged basmati rice, perfect for restaurants and catering services.",
+    location: "Within 3km",
+    currentParticipants: 6,
+    maxParticipants: 8,
+    discount: 12,
+    minQuantity: "25kg",
+    pricePerKg: 88,
+    originalPrice: 100,
+    timeLeft: "1 day",
+    organizer: "Rice Traders Hub",
+    participants: [
+      "Biryani Palace",
+      "Royal Kitchen",
+      "Indian Spice",
+      "Curry House",
+      "Rice Bowl",
+      "Desi Dhaba",
+    ],
+    isJoined: true,
+    category: "Grains",
+    deadline: "Dec 26, 2024",
+  },
+};
+
+// Get user's joined group orders
+function getMyGroupOrders() {
+  return Object.values(groupOrders).filter((order) => order.isJoined);
+}
+
+// Join Group Order Function
+function joinGroupOrder(orderId) {
+  const order = groupOrders[orderId];
+  if (!order) {
+    showNotification("Group order not found! ❌", "error");
+    return;
+  }
+
+  if (order.isJoined) {
+    showNotification("You have already joined this group order! ℹ️", "info");
+    return;
+  }
+
+  if (order.currentParticipants >= order.maxParticipants) {
+    showNotification("This group order is full! 😞", "warning");
+    return;
+  }
+
+  // Join the order
+  order.isJoined = true;
+  order.currentParticipants++;
+  order.participants.push("Your Restaurant"); // Add user's restaurant
+
+  // Update UI
+  updateGroupOrderDisplay(orderId);
+  updateMyGroupOrdersSection();
+
+  showNotification(`Successfully joined "${order.title}"! 🎉`, "success");
+  console.log(`Joined group order: ${orderId}`);
+}
+
+// Leave Group Order Function
+function leaveGroupOrder(orderId) {
+  const order = groupOrders[orderId];
+  if (!order || !order.isJoined) {
+    showNotification("You are not part of this group order! ❌", "error");
+    return;
+  }
+
+  if (confirm(`Are you sure you want to leave "${order.title}"?`)) {
+    order.isJoined = false;
+    order.currentParticipants--;
+    order.participants = order.participants.filter(
+      (p) => p !== "Your Restaurant"
+    );
+
+    updateGroupOrderDisplay(orderId);
+    updateMyGroupOrdersSection();
+
+    showNotification(`Left "${order.title}" group order! 👋`, "info");
+  }
+}
+
+// Show Group Order Details Modal
+function showGroupOrderDetails(orderId) {
+  const order = groupOrders[orderId];
+  if (!order) return;
+
+  const progress = Math.round(
+    (order.currentParticipants / order.maxParticipants) * 100
+  );
+  const savingsPerKg = order.originalPrice - order.pricePerKg;
+
+  const modalContent = `
+    <div class="group-order-modal">
+      <div class="modal-header">
+        <h2><i class="fas fa-users"></i> ${order.title}</h2>
+        <div class="order-badges">
+          <span class="badge badge-category">${order.category}</span>
+          <span class="badge badge-discount">${order.discount}% OFF</span>
+        </div>
+      </div>
+      
+      <div class="modal-body">
+        <div class="order-details-grid">
+          <div class="detail-section">
+            <h3><i class="fas fa-info-circle"></i> Order Details</h3>
+            <p class="order-description">${order.description}</p>
+            <div class="detail-item">
+              <span class="label">📍 Location:</span>
+              <span class="value">${order.location}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">⏰ Time Left:</span>
+              <span class="value">${order.timeLeft}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">📅 Deadline:</span>
+              <span class="value">${order.deadline}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">🏪 Organizer:</span>
+              <span class="value">${order.organizer}</span>
+            </div>
+          </div>
+
+          <div class="detail-section">
+            <h3><i class="fas fa-chart-bar"></i> Progress & Pricing</h3>
+            <div class="progress-section">
+              <div class="progress-bar-large">
+                <div class="progress-fill" style="width: ${progress}%"></div>
+              </div>
+              <p class="progress-text">${order.currentParticipants}/${
+    order.maxParticipants
+  } vendors joined (${progress}%)</p>
+            </div>
+            
+            <div class="pricing-info">
+              <div class="price-comparison">
+                <div class="original-price">₹${order.originalPrice}/kg</div>
+                <div class="discounted-price">₹${order.pricePerKg}/kg</div>
+                <div class="savings">Save ₹${savingsPerKg}/kg!</div>
+              </div>
+              <div class="min-quantity">
+                <span class="label">📦 Minimum Quantity:</span>
+                <span class="value">${order.minQuantity}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="participants-section">
+          <h3><i class="fas fa-users"></i> Participants (${
+            order.currentParticipants
+          })</h3>
+          <div class="participants-list">
+            ${order.participants
+              .map(
+                (participant) => `
+              <div class="participant-item ${
+                participant === "Your Restaurant" ? "current-user" : ""
+              }">
+                <i class="fas fa-store"></i>
+                <span>${participant}</span>
+                ${
+                  participant === "Your Restaurant"
+                    ? '<span class="you-badge">You</span>'
+                    : ""
+                }
+              </div>
+            `
+              )
+              .join("")}
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          ${
+            order.isJoined
+              ? `<button class="btn btn-secondary" onclick="leaveGroupOrder(${order.id}); closeModal();">
+              <i class="fas fa-sign-out-alt"></i> Leave Group Order
+            </button>`
+              : `<button class="btn btn-primary" onclick="joinGroupOrder(${order.id}); closeModal();">
+              <i class="fas fa-user-plus"></i> Join Group Order
+            </button>`
+          }
+          <button class="btn btn-secondary" onclick="closeModal()">
+            <i class="fas fa-times"></i> Close
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  showModal(modalContent);
+}
+
+// Update Group Order Display
+function updateGroupOrderDisplay(orderId) {
+  const order = groupOrders[orderId];
+  const progress = Math.round(
+    (order.currentParticipants / order.maxParticipants) * 100
+  );
+
+  // Update the specific group order item in the dashboard
+  const orderElement = document.querySelector(`[data-order-id="${orderId}"]`);
+  if (orderElement) {
+    const progressBar = orderElement.querySelector(".progress-fill");
+    const progressText = orderElement.querySelector(".group-progress span");
+    const participantText = orderElement.querySelector(".group-info p");
+    const joinButton = orderElement.querySelector(".btn-join");
+
+    if (progressBar) progressBar.style.width = `${progress}%`;
+    if (progressText) progressText.textContent = `${progress}% filled`;
+    if (participantText)
+      participantText.innerHTML = `📍 ${order.location} • ${order.currentParticipants}/${order.maxParticipants} vendors joined`;
+
+    if (joinButton) {
+      if (order.isJoined) {
+        joinButton.textContent = "Joined ✓";
+        joinButton.classList.add("joined");
+        joinButton.setAttribute("onclick", `showGroupOrderDetails(${orderId})`);
+      } else {
+        joinButton.textContent = "Join";
+        joinButton.classList.remove("joined");
+        joinButton.setAttribute("onclick", `joinGroupOrder(${orderId})`);
+      }
+    }
+  }
+}
+
+// Update My Group Orders Section
+function updateMyGroupOrdersSection() {
+  const myOrders = getMyGroupOrders();
+  const container = document.getElementById("myGroupOrdersContainer");
+
+  if (!container) return;
+
+  if (myOrders.length === 0) {
+    container.innerHTML = `
+      <div class="no-orders">
+        <i class="fas fa-users"></i>
+        <p>You haven't joined any group orders yet.</p>
+        <button class="btn btn-primary" onclick="scrollToGroupOrders()">Browse Group Orders</button>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = myOrders
+    .map((order) => {
+      const progress = Math.round(
+        (order.currentParticipants / order.maxParticipants) * 100
+      );
+      return `
+      <div class="my-group-order-item" data-order-id="${order.id}">
+        <div class="order-header">
+          <h4>${order.title}</h4>
+          <span class="discount-badge">${order.discount}% OFF</span>
+        </div>
+        <div class="order-details">
+          <p>📍 ${order.location} • ⏰ ${order.timeLeft}</p>
+          <div class="progress-mini">
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: ${progress}%"></div>
+            </div>
+            <span>${order.currentParticipants}/${order.maxParticipants}</span>
+          </div>
+        </div>
+        <div class="order-actions">
+          <button class="btn btn-sm" onclick="showGroupOrderDetails(${order.id})">View Details</button>
+          <button class="btn btn-sm btn-secondary" onclick="leaveGroupOrder(${order.id})">Leave</button>
+        </div>
+      </div>
+    `;
+    })
+    .join("");
+}
+
+// Scroll to group orders section
+function scrollToGroupOrders() {
+  const groupOrdersSection = document.querySelector(".group-orders");
+  if (groupOrdersSection) {
+    groupOrdersSection.scrollIntoView({ behavior: "smooth" });
+  }
+}
+
+// Initialize Group Orders System
+function initializeGroupOrders() {
+  // Add data-order-id attributes to existing group order items
+  const groupOrderItems = document.querySelectorAll(".group-order-item");
+  groupOrderItems.forEach((item, index) => {
+    const orderId = index + 1; // IDs start from 1
+    item.setAttribute("data-order-id", orderId);
+
+    // Update display for already joined orders
+    const order = groupOrders[orderId];
+    if (order && order.isJoined) {
+      updateGroupOrderDisplay(orderId);
+    }
+  });
+
+  // Add click handlers for viewing details
+  const joinButtons = document.querySelectorAll(".btn-join");
+  joinButtons.forEach((button) => {
+    // Add right-click for details
+    button.addEventListener("contextmenu", function (e) {
+      e.preventDefault();
+      const orderItem = e.target.closest(".group-order-item");
+      const orderId = orderItem.getAttribute("data-order-id");
+      if (orderId) {
+        showGroupOrderDetails(parseInt(orderId));
+      }
+    });
+  });
+
+  // Update my group orders section
+  updateMyGroupOrdersSection();
+}
+
+// =================
+// ADVANCED GROUP ORDER FEATURES
+// =================
+
+// Show Create Group Order Modal
+function showCreateGroupOrderModal() {
+  const modalContent = `
+    <div class="create-group-order-modal">
+      <div class="modal-header">
+        <h2><i class="fas fa-plus-circle"></i> Create New Group Order</h2>
+      </div>
+      
+      <form class="modal-body" onsubmit="createGroupOrder(event)">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="orderTitle">Order Title *</label>
+            <input type="text" id="orderTitle" name="title" required placeholder="e.g., Bulk Tomatoes Order">
+          </div>
+          
+          <div class="form-group">
+            <label for="orderCategory">Category *</label>
+            <select id="orderCategory" name="category" required>
+              <option value="">Select Category</option>
+              <option value="Vegetables">Vegetables</option>
+              <option value="Spices">Spices</option>
+              <option value="Grains">Grains</option>
+              <option value="Packaging">Packaging</option>
+              <option value="Dairy">Dairy</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          
+          <div class="form-group full-width">
+            <label for="orderDescription">Description *</label>
+            <textarea id="orderDescription" name="description" required rows="3" 
+              placeholder="Describe the products, quality requirements, and any special instructions..."></textarea>
+          </div>
+          
+          <div class="form-group">
+            <label for="maxParticipants">Max Participants *</label>
+            <input type="number" id="maxParticipants" name="maxParticipants" required min="2" max="50" placeholder="10">
+          </div>
+          
+          <div class="form-group">
+            <label for="minQuantity">Minimum Quantity *</label>
+            <input type="text" id="minQuantity" name="minQuantity" required placeholder="e.g., 25kg, 100 pieces">
+          </div>
+          
+          <div class="form-group">
+            <label for="originalPrice">Regular Price (₹) *</label>
+            <input type="number" id="originalPrice" name="originalPrice" required step="0.01" placeholder="100.00">
+          </div>
+          
+          <div class="form-group">
+            <label for="groupPrice">Group Price (₹) *</label>
+            <input type="number" id="groupPrice" name="groupPrice" required step="0.01" placeholder="85.00">
+          </div>
+          
+          <div class="form-group">
+            <label for="orderDeadline">Deadline *</label>
+            <input type="date" id="orderDeadline" name="deadline" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="deliveryLocation">Delivery Location *</label>
+            <input type="text" id="deliveryLocation" name="location" required placeholder="e.g., Within 3km">
+          </div>
+        </div>
+        
+        <div class="modal-actions">
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Create Group Order
+          </button>
+          <button type="button" class="btn btn-secondary" onclick="closeModal()">
+            <i class="fas fa-times"></i> Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  `;
+
+  showModal(modalContent);
+}
+
+// Create Group Order Function
+function createGroupOrder(event) {
+  event.preventDefault();
+
+  const formData = new FormData(event.target);
+  const orderData = Object.fromEntries(formData.entries());
+
+  // Generate new order ID
+  const newId = Math.max(...Object.keys(groupOrders).map(Number)) + 1;
+
+  // Calculate discount percentage
+  const discount = Math.round(
+    ((orderData.originalPrice - orderData.groupPrice) /
+      orderData.originalPrice) *
+      100
+  );
+
+  // Calculate days left
+  const deadline = new Date(orderData.deadline);
+  const today = new Date();
+  const diffTime = deadline - today;
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  const timeLeft = diffDays > 0 ? `${diffDays} days` : "0 days";
+
+  // Create new group order
+  groupOrders[newId] = {
+    id: newId,
+    title: orderData.title,
+    description: orderData.description,
+    location: orderData.location,
+    currentParticipants: 1, // Creator joins automatically
+    maxParticipants: parseInt(orderData.maxParticipants),
+    discount: discount,
+    minQuantity: orderData.minQuantity,
+    pricePerKg: parseFloat(orderData.groupPrice),
+    originalPrice: parseFloat(orderData.originalPrice),
+    timeLeft: timeLeft,
+    organizer: "Your Restaurant", // User is the organizer
+    participants: ["Your Restaurant"],
+    isJoined: true, // Creator automatically joins
+    category: orderData.category,
+    deadline: orderData.deadline,
+  };
+
+  // Update UI
+  addGroupOrderToDOM(newId);
+  updateMyGroupOrdersSection();
+
+  // Close modal and show success
+  closeModal();
+  showNotification(
+    `Successfully created "${orderData.title}" group order! 🎉`,
+    "success"
+  );
+
+  console.log("Created new group order:", groupOrders[newId]);
+}
+
+// Add new group order to DOM
+function addGroupOrderToDOM(orderId) {
+  const order = groupOrders[orderId];
+  const progress = Math.round(
+    (order.currentParticipants / order.maxParticipants) * 100
+  );
+
+  const groupOrdersContainer = document.querySelector(".group-orders");
+  if (!groupOrdersContainer) return;
+
+  const orderHTML = `
+    <div class="group-order-item" data-order-id="${orderId}">
+      <div class="group-info">
+        <h4><a href="#" onclick="showGroupOrderDetails(${orderId}); return false;" style="color: #333; text-decoration: none;">${order.title}</a></h4>
+        <p>📍 ${order.location} • ${order.currentParticipants}/${order.maxParticipants} vendors joined</p>
+        <div class="group-progress">
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: ${progress}%"></div>
+          </div>
+          <span>${progress}% filled</span>
+        </div>
+      </div>
+      <div class="group-action">
+        <div class="discount-badge">${order.discount}% OFF</div>
+        <button class="btn-join joined" onclick="showGroupOrderDetails(${orderId})">
+          Joined ✓
+        </button>
+      </div>
+    </div>
+  `;
+
+  groupOrdersContainer.insertAdjacentHTML("beforeend", orderHTML);
+}
+
+// Show All Group Orders Modal
+function showAllGroupOrders() {
+  const allOrders = Object.values(groupOrders);
+
+  const modalContent = `
+    <div class="all-group-orders-modal">
+      <div class="modal-header">
+        <h2><i class="fas fa-users"></i> All Group Orders</h2>
+        <div class="filter-controls">
+          <select id="categoryFilter" onchange="filterGroupOrders()">
+            <option value="">All Categories</option>
+            <option value="Vegetables">Vegetables</option>
+            <option value="Spices">Spices</option>
+            <option value="Grains">Grains</option>
+            <option value="Packaging">Packaging</option>
+            <option value="Dairy">Dairy</option>
+          </select>
+          <select id="statusFilter" onchange="filterGroupOrders()">
+            <option value="">All Orders</option>
+            <option value="joined">My Orders</option>
+            <option value="available">Available</option>
+            <option value="full">Full</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="modal-body">
+        <div id="allOrdersList" class="all-orders-grid">
+          ${allOrders
+            .map((order) => {
+              const progress = Math.round(
+                (order.currentParticipants / order.maxParticipants) * 100
+              );
+              const isFull = order.currentParticipants >= order.maxParticipants;
+              return `
+              <div class="order-card" data-category="${
+                order.category
+              }" data-status="${
+                order.isJoined ? "joined" : isFull ? "full" : "available"
+              }">
+                <div class="order-card-header">
+                  <h4>${order.title}</h4>
+                  <div class="badges">
+                    <span class="badge badge-category">${order.category}</span>
+                    <span class="badge badge-discount">${
+                      order.discount
+                    }% OFF</span>
+                  </div>
+                </div>
+                <p class="order-description">${order.description.substring(
+                  0,
+                  100
+                )}...</p>
+                <div class="order-stats">
+                  <div class="stat">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>${order.location}</span>
+                  </div>
+                  <div class="stat">
+                    <i class="fas fa-clock"></i>
+                    <span>${order.timeLeft}</span>
+                  </div>
+                </div>
+                <div class="progress-section">
+                  <div class="progress-bar">
+                    <div class="progress-fill" style="width: ${progress}%"></div>
+                  </div>
+                  <span>${order.currentParticipants}/${
+                order.maxParticipants
+              } joined</span>
+                </div>
+                <div class="order-actions">
+                  <button class="btn btn-sm" onclick="showGroupOrderDetails(${
+                    order.id
+                  })">View Details</button>
+                  ${
+                    order.isJoined
+                      ? `<button class="btn btn-sm btn-secondary" onclick="leaveGroupOrder(${order.id}); filterGroupOrders();">Leave</button>`
+                      : isFull
+                      ? `<button class="btn btn-sm" disabled>Full</button>`
+                      : `<button class="btn btn-sm btn-primary" onclick="joinGroupOrder(${order.id}); filterGroupOrders();">Join</button>`
+                  }
+                </div>
+              </div>
+            `;
+            })
+            .join("")}
+        </div>
+      </div>
+      
+      <div class="modal-actions">
+        <button class="btn btn-primary" onclick="showCreateGroupOrderModal()">
+          <i class="fas fa-plus"></i> Create New Order
+        </button>
+        <button class="btn btn-secondary" onclick="closeModal()">
+          <i class="fas fa-times"></i> Close
+        </button>
+      </div>
+    </div>
+  `;
+
+  showModal(modalContent);
+}
+
+// Filter Group Orders in All Orders Modal
+function filterGroupOrders() {
+  const categoryFilter = document.getElementById("categoryFilter")?.value || "";
+  const statusFilter = document.getElementById("statusFilter")?.value || "";
+
+  const orderCards = document.querySelectorAll(".order-card");
+
+  orderCards.forEach((card) => {
+    const category = card.getAttribute("data-category");
+    const status = card.getAttribute("data-status");
+
+    const categoryMatch = !categoryFilter || category === categoryFilter;
+    const statusMatch = !statusFilter || status === statusFilter;
+
+    if (categoryMatch && statusMatch) {
+      card.style.display = "block";
+    } else {
+      card.style.display = "none";
+    }
+  });
+}
+
+// Auto-refresh group orders (simulate real-time updates)
+function startGroupOrderAutoRefresh() {
+  setInterval(() => {
+    // Simulate random participants joining/leaving
+    Object.values(groupOrders).forEach((order) => {
+      if (
+        !order.isJoined &&
+        order.currentParticipants < order.maxParticipants
+      ) {
+        // 10% chance someone joins
+        if (Math.random() < 0.1) {
+          order.currentParticipants++;
+          order.participants.push(
+            `Restaurant ${Math.floor(Math.random() * 100)}`
+          );
+          updateGroupOrderDisplay(order.id);
+        }
+      }
+    });
+  }, 30000); // Check every 30 seconds
+}
+
+// Supplier Functions
+function contactSupplier(supplierId) {
+  showNotification(`Contacting supplier! 📞`, "info");
+  console.log(`Contacting supplier: ${supplierId}`);
+}
+
+// View Functions
+function viewAllCategories() {
+  showNotification("Loading all categories... 📂", "info");
+  console.log("View all categories");
+}
+
+function viewAllOrders() {
+  showNotification("Loading order history... 📋", "info");
+  console.log("View all orders");
+}
+
+function seeMoreSuppliers() {
+  showNotification("Loading more suppliers... 🏪", "info");
+  console.log("See more suppliers");
+}
+
+function findMoreSuppliers() {
+  showNotification("Finding more suppliers... 🔍", "info");
+  console.log("Find more suppliers");
+}
+
+// Fallback notification function if main.js hasn't loaded yet
+function fallbackNotification(message, type) {
+  console.log(`${type.toUpperCase()}: ${message}`);
+  // Create a simple alert as fallback
+  if (type === "error" || type === "warning") {
+    alert(message);
+  }
+}
+
 // Load user data from localStorage
 function loadUserData() {
   const userName = localStorage.getItem("userName") || "User";
@@ -22,13 +813,20 @@ function loadUserData() {
     profilePic.alt = userName;
   }
 
-  // Check if user is logged in, if not redirect to home
+  // Check if user is logged in, if not redirect to login
   if (!localStorage.getItem("userName")) {
-    showNotification("Please login first", "warning");
+    const notifyFunc =
+      typeof showNotification === "function"
+        ? showNotification
+        : fallbackNotification;
+    notifyFunc("Please login to access your dashboard", "warning");
     setTimeout(() => {
-      window.location.href = "index.html";
+      window.location.href = "index.html#login";
     }, 2000);
+    return false;
   }
+
+  return true;
 }
 
 // Logout function
@@ -131,11 +929,43 @@ const sampleProducts = [
 
 let cart = [];
 
-// Initialize dashboard
+// Initialize dashboard with dependency check
 document.addEventListener("DOMContentLoaded", function () {
-  loadUserData();
-  setupDashboard();
-  loadProducts();
+  console.log("Dashboard loading started...");
+
+  // VISUAL PROOF that updated code is running
+  document.body.style.border = "5px solid red";
+  document.body.style.boxSizing = "border-box";
+  setTimeout(() => {
+    document.body.style.border = "none";
+  }, 3000);
+
+  // Wait for main.js functions to be available
+  const checkDependencies = () => {
+    console.log("Checking dependencies...", {
+      showNotification: typeof showNotification,
+      showModal: typeof showModal,
+    });
+
+    if (
+      typeof showNotification === "function" &&
+      typeof showModal === "function"
+    ) {
+      console.log("Dependencies loaded, initializing dashboard...");
+      // Only proceed if user is authenticated
+      if (loadUserData()) {
+        console.log("User authenticated, setting up dashboard...");
+        setupDashboard();
+        loadProducts();
+      }
+    } else {
+      console.log("Dependencies not ready, retrying...");
+      // Wait a bit more for main.js to load
+      setTimeout(checkDependencies, 100);
+    }
+  };
+
+  checkDependencies();
 });
 
 function setupDashboard() {
@@ -150,6 +980,12 @@ function setupDashboard() {
 
   // Setup dropdown menu
   setupDropdownMenu();
+
+  // Initialize Group Orders System
+  initializeGroupOrders();
+
+  // Start auto-refresh for group orders
+  startGroupOrderAutoRefresh();
 }
 
 // Animate stats counters

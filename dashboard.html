@@ -42,7 +42,7 @@
           </div>
           <div class="user-menu">
             <img
-              src="https://via.placeholder.com/40x40/ff6b35/ffffff?text=U"
+              src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiNmZjZiMzUiLz4KPHN2ZyB4PSI4IiB5PSI4IiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSI+CjxwYXRoIGQ9Im0xMiAxMmEzIDMgMCAwIDAgMC02IDMgMyAwIDAgMCAwIDZ6IiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJtNiAyMXYtMmEzIDMgMCAwIDEgMy0zaDZhMyAzIDAgMCAxIDMgM3YyeiIgZmlsbD0id2hpdGUiLz4KPC9zdmc+Cjwvc3ZnPgo="
               alt="Profile"
               class="profile-pic"
               id="profilePic"
@@ -50,8 +50,12 @@
             <div class="dropdown">
               <i class="fas fa-chevron-down"></i>
               <div class="dropdown-menu">
-                <a href="#"><i class="fas fa-user"></i> Profile</a>
-                <a href="#"><i class="fas fa-cog"></i> Settings</a>
+                <a href="#" onclick="showProfile()"
+                  ><i class="fas fa-user"></i> Profile</a
+                >
+                <a href="#" onclick="showSettings()"
+                  ><i class="fas fa-cog"></i> Settings</a
+                >
                 <a href="#" onclick="logout()"
                   ><i class="fas fa-sign-out-alt"></i> Logout</a
                 >
@@ -106,13 +110,26 @@
         </div>
       </section>
 
+      <!-- My Group Orders Section -->
+      <section class="my-group-orders-section">
+        <div class="section-header">
+          <h2><i class="fas fa-users"></i> My Group Orders</h2>
+          <button class="btn-link" onclick="showGroupOrders()">View All</button>
+        </div>
+        <div id="myGroupOrdersContainer" class="my-group-orders-container">
+          <!-- Dynamic content will be loaded here -->
+        </div>
+      </section>
+
       <!-- Main Dashboard Grid -->
       <section class="dashboard-grid">
         <!-- Product Categories -->
         <div class="dashboard-card">
           <div class="card-header">
             <h3><i class="fas fa-th-large"></i> Product Categories</h3>
-            <button class="btn-link">View All</button>
+            <button class="btn-link" onclick="viewAllCategories()">
+              View All
+            </button>
           </div>
           <div class="categories-grid">
             <div class="category-item" onclick="browseCategory('vegetables')">
@@ -152,7 +169,7 @@
         <div class="dashboard-card">
           <div class="card-header">
             <h3><i class="fas fa-clock"></i> Recent Orders</h3>
-            <button class="btn-link">View All</button>
+            <button class="btn-link" onclick="viewAllOrders()">View All</button>
           </div>
           <div class="orders-list">
             <div class="order-item">
@@ -195,12 +212,29 @@
         <div class="dashboard-card">
           <div class="card-header">
             <h3><i class="fas fa-users"></i> Join Group Orders</h3>
-            <button class="btn-link">See More</button>
+            <div class="header-actions">
+              <button
+                class="btn btn-primary btn-sm"
+                onclick="showCreateGroupOrderModal()"
+              >
+                <i class="fas fa-plus"></i> Create Order
+              </button>
+              <button class="btn-link" onclick="showAllGroupOrders()">
+                See More
+              </button>
+            </div>
           </div>
           <div class="group-orders">
             <div class="group-order-item">
               <div class="group-info">
-                <h4>Bulk Onion Order</h4>
+                <h4>
+                  <a
+                    href="#"
+                    onclick="showGroupOrderDetails(1); return false;"
+                    style="color: #333; text-decoration: none"
+                    >Bulk Onion Order</a
+                  >
+                </h4>
                 <p>📍 Within 2km • 8/10 vendors joined</p>
                 <div class="group-progress">
                   <div class="progress-bar">
@@ -218,7 +252,14 @@
             </div>
             <div class="group-order-item">
               <div class="group-info">
-                <h4>Packaging Materials</h4>
+                <h4>
+                  <a
+                    href="#"
+                    onclick="showGroupOrderDetails(2); return false;"
+                    style="color: #333; text-decoration: none"
+                    >Packaging Materials</a
+                  >
+                </h4>
                 <p>📍 Within 1km • 5/12 vendors joined</p>
                 <div class="group-progress">
                   <div class="progress-bar">
@@ -241,7 +282,9 @@
         <div class="dashboard-card">
           <div class="card-header">
             <h3><i class="fas fa-shield-alt"></i> Your Trusted Suppliers</h3>
-            <button class="btn-link">Find More</button>
+            <button class="btn-link" onclick="findMoreSuppliers()">
+              Find More
+            </button>
           </div>
           <div class="suppliers-list">
             <div class="supplier-item">

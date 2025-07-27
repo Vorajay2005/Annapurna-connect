@@ -326,6 +326,17 @@
         <span class="close" onclick="hideModal('otpModal')">&times;</span>
         <h2>Enter OTP</h2>
         <p>We've sent a 6-digit OTP to <span id="otpMobile"></span></p>
+        <div id="otpHint" class="demo-hint" style="display: none">
+          <i class="fas fa-info-circle"></i>
+          <strong>Demo Mode:</strong> Use code
+          <span
+            class="demo-code"
+            onclick="fillDemoOTP()"
+            style="cursor: pointer"
+            title="Click to auto-fill"
+            >123456</span
+          >
+        </div>
         <form id="otpForm">
           <div class="otp-inputs">
             <input type="text" maxlength="1" class="otp-digit" />

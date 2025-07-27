@@ -1,6 +1,6 @@
 // Service Worker for Annapurna Connect PWA
 
-const CACHE_NAME = "annapurna-connect-v1";
+const CACHE_NAME = "annapurna-connect-v2-no-errors";
 const urlsToCache = [
   "/",
   "/index.html",
@@ -27,16 +27,24 @@ self.addEventListener("install", function (event) {
   );
 });
 
-// Fetch event
+// Fetch event - Network first strategy
 self.addEventListener("fetch", function (event) {
   event.respondWith(
-    caches.match(event.request).then(function (response) {
-      // Return cached version or fetch from network
-      if (response) {
+    fetch(event.request)
+      .then(function (response) {
+        // If network request is successful, update cache and return response
+        if (response && response.status === 200) {
+          const responseClone = response.clone();
+          caches.open(CACHE_NAME).then(function (cache) {
+            cache.put(event.request, responseClone);
+          });
+        }
         return response;
-      }
-      return fetch(event.request);
-    })
+      })
+      .catch(function () {
+        // If network fails, try cache
+        return caches.match(event.request);
+      })
   );
 });
 

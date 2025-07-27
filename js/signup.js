@@ -391,14 +391,15 @@ function submitVendorRegistration(data) {
       "success"
     );
 
-    // Store user data (in real app, handle response)
-    localStorage.setItem("userType", "vendor");
-    localStorage.setItem("userName", data.fullName);
+    // Store user data for success page (temporary)
+    localStorage.setItem("signupUserType", "vendor");
+    localStorage.setItem("signupUserName", data.fullName);
+    localStorage.setItem("signupUserMobile", data.mobile || "");
 
-    // Redirect to dashboard
+    // Redirect to success page instead of dashboard
     setTimeout(() => {
-      window.location.href = "dashboard.html";
-    }, 2000);
+      window.location.replace("signup-success.html");
+    }, 1500);
   }, 3000);
 }
 
@@ -416,14 +417,15 @@ function submitSupplierRegistration(data) {
       "success"
     );
 
-    // Store user data
-    localStorage.setItem("userType", "supplier");
-    localStorage.setItem("userName", data.ownerName);
+    // Store user data for success page (temporary)
+    localStorage.setItem("signupUserType", "supplier");
+    localStorage.setItem("signupUserName", data.ownerName);
+    localStorage.setItem("signupUserMobile", data.mobile || "");
 
-    // Redirect to pending verification page
+    // Redirect to success page instead of verification pending
     setTimeout(() => {
-      window.location.href = "verification-pending.html";
-    }, 3000);
+      window.location.replace("signup-success.html");
+    }, 1500);
   }, 3000);
 }
 

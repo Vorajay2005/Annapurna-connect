@@ -10,6 +10,15 @@ function initializeApp() {
   setupForms();
   setupScrollAnimations();
   setupMobileMenu();
+
+  // Check if coming from signup success page
+  if (window.location.hash === "#login") {
+    setTimeout(() => {
+      showModal("loginModal");
+      // Clear the hash
+      history.replaceState(null, null, window.location.pathname);
+    }, 500);
+  }
 }
 
 // Navigation Setup
@@ -198,8 +207,26 @@ function handleLogin() {
     document.getElementById("otpMobile").textContent = mobile;
     hideModal("loginModal");
     showModal("otpModal");
-    showNotification("OTP sent successfully!", "success");
+    showNotification("OTP sent! Demo code: 123456", "success");
+
+    // Show demo OTP message
+    const otpHint = document.getElementById("otpHint");
+    if (otpHint) {
+      otpHint.style.display = "block";
+    }
   }, 1500);
+}
+
+// Fill demo OTP function
+function fillDemoOTP() {
+  const otpInputs = document.querySelectorAll(".otp-digit");
+  const demoCode = "123456";
+
+  otpInputs.forEach((input, index) => {
+    input.value = demoCode[index];
+  });
+
+  showNotification("Demo OTP filled! Click Verify OTP", "info");
 }
 
 // OTP Verification Handler
@@ -214,7 +241,12 @@ function handleOTPVerification() {
     return;
   }
 
-  // Simulate OTP verification
+  // Simulate OTP verification (accept demo code 123456)
+  if (otp !== "123456") {
+    showNotification("Invalid OTP. Use demo code: 123456", "error");
+    return;
+  }
+
   showNotification("Verifying OTP...", "info");
 
   setTimeout(() => {
@@ -498,13 +530,46 @@ window.addEventListener("load", function () {
   }
 });
 
-// Error handling
-window.addEventListener("error", function (e) {
-  console.error("An error occurred:", e.error);
-  showNotification("Something went wrong. Please try again.", "error");
-});
+// Clear all caches and storage (for debugging)
+function clearAllCaches() {
+  console.log("Clearing all caches and storage...");
 
-// Service Worker Registration (for PWA features)
+  // Clear localStorage
+  localStorage.clear();
+
+  // Clear sessionStorage
+  sessionStorage.clear();
+
+  // Clear service worker cache
+  if ("caches" in window) {
+    caches.keys().then((names) => {
+      names.forEach((name) => {
+        caches.delete(name);
+      });
+    });
+  }
+
+  // Unregister service worker
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      registrations.forEach((registration) => {
+        registration.unregister();
+      });
+    });
+  }
+
+  console.log("All caches cleared!");
+  location.reload(true);
+}
+
+// Add to window for debugging
+window.clearAllCaches = clearAllCaches;
+
+// No global error handling - let browser handle errors naturally
+
+// Service Worker Registration DISABLED for debugging
+// Uncomment when error is fixed
+/*
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", function () {
     navigator.serviceWorker
@@ -517,3 +582,4 @@ if ("serviceWorker" in navigator) {
       });
   });
 }
+*/
